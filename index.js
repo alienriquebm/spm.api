@@ -1,9 +1,12 @@
-const http = require('http');
+require('dotenv').config();
 const colors = require('colors');
+const express = require('express');
 
-http.createServer((req, res) => {
-  res.write('Hola mundo');
-  res.end();
-}).listen(80);
+const app = express();
 
-console.log(colors.rainbow('Listen port 80'));
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(process.env.SRV_PORT);
+console.log(colors.green(`Listen port ${process.env.SRV_PORT}`)); // eslint-disable-line
