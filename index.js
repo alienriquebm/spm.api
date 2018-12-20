@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const colors = require('colors');
 const express = require('express');
 const config = require('./config/server');
+const routes = require('./config/routes');
 
 const app = express();
 
@@ -20,12 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.get('/', (req, res) => {
-  res.json({
-    apiStatus: 'up',
-  });
-});
+app.use(routes);
 
 app.listen(config.port);
 console.log(colors.underline(`Listen port ${config.port}`)); // eslint-disable-line
