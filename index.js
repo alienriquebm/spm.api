@@ -2,6 +2,7 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const colors = require('colors');
 const express = require('express');
+const config = require('./config/server');
 
 const app = express();
 
@@ -26,5 +27,5 @@ app.get('/', (req, res) => {
   });
 });
 
-app.listen(process.env.SRV_PORT);
-console.log(colors.underline(`Listen port ${process.env.SRV_PORT}`)); // eslint-disable-line
+app.listen(config.port);
+console.log(colors.underline(`Listen port ${config.port}`)); // eslint-disable-line
