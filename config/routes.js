@@ -10,8 +10,15 @@ router.get('/', (_, res) => {
   });
 });
 
+// In case of not match any route
+router.get('*', (req, res) => {
+  res.status(400).json({ error: 'RECURSO NO ENCONTRADO' });
+});
+
+
+// To intercept errors
 router.use((err, req, res, next) => { // eslint-disable-line
-  res.handleReject(err);
+  res.internalError(err);
 });
 
 module.exports = router;

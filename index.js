@@ -4,6 +4,7 @@ const colors = require('colors');
 const express = require('express');
 const config = require('./config/server');
 const routes = require('./config/routes');
+require('./config/express');
 
 const app = express();
 
@@ -24,4 +25,4 @@ app.use((req, res, next) => {
 app.use(routes);
 
 app.listen(config.port);
-console.log(colors.underline(`Listen port ${config.port}`)); // eslint-disable-line
+console.log(colors.underline(`API server up, listening port: ${config.port}`)); // eslint-disable-line

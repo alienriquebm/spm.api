@@ -10,6 +10,11 @@ const getAllObservations = async (_, res) => {
   });
 };
 
+const errorTest = (_, res) => {
+  res.notFoundError('Recurso no encontrado');
+};
+
 router.get('/', getAllObservations);
+router.get('/test', errorTest);
 
 module.exports = router;
