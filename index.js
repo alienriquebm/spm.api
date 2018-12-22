@@ -5,6 +5,7 @@ const express = require('express');
 const config = require('./config/server');
 const routes = require('./config/routes');
 const logger = require('./config/logger');
+const jwt = require('./middlewares/jwt');
 
 require('./config/express');
 
@@ -28,7 +29,8 @@ app.use((req, res, next) => {
   next();
 });
 
-logger.log({ level: 'info', message: 'Setting routes...', label: 'STARTUP' });
+logger.log({ level: 'info', message: 'Setting routes and JWT middleware...', label: 'STARTUP' });
+app.use(jwt);
 app.use(routes);
 
 logger.log({ level: 'info', message: 'Setting port...', label: 'STARTUP' });
