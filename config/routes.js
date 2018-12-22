@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.use('/observations', require('../controllers/ObservationsController'));
+router.use('/users', require('../controllers/UsersController'));
 
 router.get('/', (_, res) => {
   res.json({

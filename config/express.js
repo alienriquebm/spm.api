@@ -1,5 +1,20 @@
 const express = require('express');
 
+express.request.only = function only() {
+  const data = {};
+
+  for (let i = 0; i < arguments.length; i += 1) {
+    data[arguments[i]] = this.body[arguments[i]]; // eslint-disable-line
+  }
+
+  return data;
+};
+
+express.response.returnValidationError = function returnValidationError(errors, status = 403) {
+  const validationErrorResponse = { validation: errors };
+  return this.status(status).json(validationErrorResponse);
+};
+
 express.response.error = function handleError(error, status = 403) {
   return this.status(status).json({ error });
 };
