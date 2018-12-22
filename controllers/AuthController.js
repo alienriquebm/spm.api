@@ -5,9 +5,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Validator = require('../common/Validator');
 const User = require('../models/User');
+const logger = require('../config/logger');
 
 const login = async (req, res) => {
-
   // Get the params of the body
   const body = req.only('email', 'password');
 
@@ -26,6 +26,13 @@ const login = async (req, res) => {
     // There is a error validation, return the errors to validate on a form
     return res.formValidationError(isValid);
   }
+
+  // Logger
+  logger.log({
+    level: 'info',
+    message: `Login attempt by user: ${body.email}`,
+    label: 'AUTH',
+  });
 
   // Find the user
   const user = await User.findOne({
@@ -49,6 +56,13 @@ const login = async (req, res) => {
   if (!passwordMatch) {
     return res.error('Usuario o contraseña incorrecta', 404);
   }
+
+  // Logger
+  logger.log({
+    level: 'info',
+    message: `Login granted to user: ${body.email}`,
+    label: 'AUTH',
+  });
 
   // Generate the token
   const token = jwt.sign({ user: user.id, type: 'admin' }, process.env.APP_SECRET, { expiresIn: '12h' });
