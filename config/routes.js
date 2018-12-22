@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
+router.use('/auth', require('../controllers/AuthController'));
 router.use('/observations', require('../controllers/ObservationsController'));
 router.use('/users', require('../controllers/UsersController'));
 

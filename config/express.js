@@ -10,7 +10,7 @@ express.request.only = function only() {
   return data;
 };
 
-express.response.returnValidationError = function returnValidationError(errors, status = 403) {
+express.response.formValidationError = function formValidationError(errors, status = 403) {
   const validationErrorResponse = { validation: errors };
   return this.status(status).json(validationErrorResponse);
 };
