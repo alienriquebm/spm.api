@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.use('/auth', require('../controllers/AuthController'));
 router.use('/observations', require('../controllers/ObservationsController'));
+router.use('/employees', require('../controllers/EmployeesController'));
 router.use('/users', require('../controllers/UsersController'));
 
 router.get('/', (_, res) => {

@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface) => {
     const plainPassword = 'admin';
     const hashedPassword = bcrypt.hashSync(plainPassword, 10);
-    return queryInterface.bulkInsert('Users', [{
+    return queryInterface.bulkInsert('users', [{
       email: 'admin@admin.com',
       name: 'SPM',
       lastname: 'Admin',
@@ -17,5 +17,5 @@ module.exports = {
     }], {});
   },
 
-  down: queryInterface => queryInterface.bulkDelete('Users', null, {}),
+  down: queryInterface => queryInterface.bulkDelete('users', null, {}),
 };
