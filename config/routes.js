@@ -14,7 +14,11 @@ router.get('/', (_, res) => {
 
 // In case of not match any route
 router.get('*', (req, res) => {
-  res.status(400).json({ error: 'RECURSO NO ENCONTRADO' });
+  res.status(404).json({ error: 'RECURSO NO ENCONTRADO' });
+});
+
+router.post('*', (req, res) => {
+  res.status(404).json({ error: 'RECURSO NO ENCONTRADO' });
 });
 
 

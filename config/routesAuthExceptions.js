@@ -1,29 +1,30 @@
+const wildcard = require('wildcard');
 const logger = require('../config/logger');
 
 const routes = [
   '/',
-  '/auth/login',
+  '/auth/*',
 ];
 
 const routesAuthException = async route => new Promise((resolve) => {
-  const searchRoute = routes.filter(value => value === route);
-  if (searchRoute.length) {
-    // Logger
-    logger.log({
-      level: 'info',
-      message: `The route ${route} is on the auth routes exceptions list`,
-      label: 'AUTH',
-    });
-    resolve(true);
-  } else {
-    // Logger
-    logger.log({
-      level: 'info',
-      message: `The route ${route} is not on the auth routes exceptions list`,
-      label: 'AUTH',
-    });
-    resolve(false);
+  for (let i = 0; i < routes.length; i++) {
+    if (wildcard(routes[i], route)) {
+      // Logger
+      logger.log({
+        level: 'info',
+        message: `The route ${route} is on the auth routes exceptions list`,
+        label: 'AUTH',
+      });
+      return resolve(true);
+    }
   }
+  // Logger
+  logger.log({
+    level: 'info',
+    message: `The route ${route} is not on the auth routes exceptions list`,
+    label: 'AUTH',
+  });
+  return resolve(false);
 });
 
 module.exports = routesAuthException;
