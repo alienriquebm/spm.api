@@ -29,6 +29,7 @@ const checkToken = async (req, res, next) => {
       return res.error('TOKEN INVALID', 403);
     }
 
+    // Check if user is enabled
     const instance = await User.findOne({
       where: {
         id: decoded.id,
@@ -43,8 +44,11 @@ const checkToken = async (req, res, next) => {
         message: `Route ${req.path} access granted to user: ${decoded.user}`,
         label: 'AUTH',
       });
+      // Access granted to the route
       return next();
     }
+
+    // The user is inactive
     return res.error('Usuario inactivo', 403);
   });
 
