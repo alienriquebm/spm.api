@@ -35,5 +35,26 @@ const fields = {
   },
 };
 
-const model = cn.define('employees_groups', fields);
+const model = cn.define('employees__groups', fields);
+model.isEmployeeInGroup = async (employeeId, groupId) => {
+  const instance = await cn
+    .query(
+      `
+      SELECT id FROM employees__groups
+      WHERE employeeId = :employeeId
+      AND groupId = :groupId
+      `,
+      {
+        replacements: {
+          employeeId,
+          groupId,
+        },
+        type: cn.QueryTypes.SELECT,
+      },
+    );
+  if (instance.length) {
+    return true;
+  }
+  return false;
+};
 module.exports = model;

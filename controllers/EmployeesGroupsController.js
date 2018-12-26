@@ -9,6 +9,7 @@ const assignEmployeeGroup = async (req, res) => {
   const rules = {
     rules: {
       employeeId: 'required|exists:employees,id',
+      groupId: 'required|exists:groups,id',
     },
   };
 
@@ -16,7 +17,15 @@ const assignEmployeeGroup = async (req, res) => {
   if (isValid !== true) {
     return res.formValidationError(isValid);
   }
-  return res.json({ status: 'ok' });
+
+  const employeeExistsOnGroup = await EmployeeGroup
+    .isEmployeeInGroup(body.employeeId, body.groupId);
+  if (employeeExistsOnGroup) {
+    return res.error('El empleado existe en el grupo seleccionado');
+  }
+  const instance = await EmployeeGroup
+    .create({ groupId: body.groupId, employeeId: body.employeeId });
+  return res.json(instance);
 };
 
 router.post('/assign-group', assignEmployeeGroup);

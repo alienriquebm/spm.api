@@ -21,7 +21,6 @@ Validator.registerAsync('exists', async (value, attribute, req, passes) => {
   if (valueParsed.length < 2) {
     return passes(false);
   }
-  console.log('VALUE====', value)
   const table = valueParsed[0];
   const field = valueParsed[1];
 
@@ -33,7 +32,6 @@ Validator.registerAsync('exists', async (value, attribute, req, passes) => {
     return passes(false);
   }
   return passes();
-
 }, 'No existe');
 
 module.exports = Validator;
