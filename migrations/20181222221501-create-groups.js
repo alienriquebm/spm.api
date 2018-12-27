@@ -18,6 +18,11 @@ module.exports = {
         allowNull: true,
         comment: 'Group description',
       },
+      isEnabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        comment: 'The user is or not enabled',
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

@@ -34,7 +34,7 @@ express.response.error = function handleError(error, status = 403) {
   return this.status(status).json({ error });
 };
 
-express.response.notFoundError = function handleNotFoundError(error) {
+express.response.notFoundError = function handleNotFoundError(error = 'Recurso no encontrado') {
   logger.log({
     level: 'error',
     message: error,

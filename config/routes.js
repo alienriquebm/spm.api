@@ -6,6 +6,7 @@ router.use('/auth', require('../controllers/AuthController'));
 router.use('/observations', require('../controllers/ObservationsController'));
 router.use('/employees', require('../controllers/EmployeesController'));
 router.use('/users', require('../controllers/UsersController'));
+router.use('/groups', require('../controllers/GroupsController'));
 router.use('/employees-groups', require('../controllers/EmployeesGroupsController'));
 
 router.get('/', (_, res) => {

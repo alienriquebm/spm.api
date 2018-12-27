@@ -19,6 +19,11 @@ const fields = {
     allowNull: true,
     comment: 'Group description',
   },
+  isEnabled: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    comment: 'The user is or not enabled',
+  },
   createdAt: {
     type: Sequelize.DATE,
     allowNull: false,
@@ -30,4 +35,24 @@ const fields = {
 };
 
 const model = cn.define('groups', fields);
+model.isGroupEnabled = async (groupId) => {
+  const instance = await cn
+    .query(
+      `
+    SELECT id FROM groups
+    WHERE id = :groupId
+    AND isEnabled = 1
+    `,
+      {
+        replacements: {
+          id: groupId,
+        },
+        type: cn.QueryTypes.SELECT,
+      },
+    );
+  if (instance.length) {
+    return true;
+  }
+  return false;
+};
 module.exports = model;

@@ -57,4 +57,24 @@ model.isEmployeeInGroup = async (employeeId, groupId) => {
   }
   return false;
 };
+model.getEmployeeGroups = async (employeeId) => {
+  const instance = await cn
+    .query(
+      `
+      SELECT g.id, g.title, g.description, g.isEnabled, g.createdAt, g.updatedAt
+      FROM employees__groups as eg
+      JOIN groups as g on g.id = eg.id
+      WHERE eg.employeeId = :employeeId
+      AND g.isEnabled = 1
+      
+      `,
+      {
+        replacements: {
+          employeeId,
+        },
+        type: cn.QueryTypes.SELECT,
+      },
+    );
+  return (instance);
+};
 module.exports = model;
