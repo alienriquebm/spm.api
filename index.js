@@ -34,6 +34,6 @@ app.use(jwt);
 app.use(routes);
 
 logger.log({ level: 'info', message: 'Setting port...', label: 'STARTUP' });
-app.listen(config.port);
+app.listen(config.port || 8000);
 logger.log({ level: 'info', message: `API server up, listening port: ${config.port}`, label: 'STARTUP' });
 console.log(colors.underline(`API server up, listening port: ${config.port}`)); // eslint-disable-line
