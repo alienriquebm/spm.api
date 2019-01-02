@@ -9,7 +9,8 @@
     "undomigrate": "sequelize db:migrate:undo",
     "seed": "sequelize db:seed:all",
     "unseed": "sequelize db:seed:undo",
-    "refreshdb": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
+    "refreshdb": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
+    "start": "nodemon"
   },
   "devDependencies": {
     "eslint": "^5.10.0",
