@@ -10,7 +10,7 @@
     "seed": "sequelize db:seed:all",
     "unseed": "sequelize db:seed:undo",
     "refreshdb": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
-    "start": "nodemon"
+    "start": "node index.js"
   },
   "devDependencies": {
     "eslint": "^5.10.0",
