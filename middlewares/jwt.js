@@ -44,6 +44,8 @@ const checkToken = async (req, res, next) => {
         message: `Route ${req.path} access granted to user: ${decoded.user}`,
         label: 'AUTH',
       });
+      req.userId = decoded.id;
+      req.user = decoded.user;
       // Access granted to the route
       return next();
     }

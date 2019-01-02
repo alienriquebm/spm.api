@@ -52,4 +52,18 @@ model.isGroupEnabled = async (groupId) => {
     );
   return !!instance.total;
 };
+model.index = async () => {
+  const instance = await cn
+    .query(
+      `
+      SELECT id, title, description, isEnabled
+      FROM groups
+      WHERE isEnabled = 1
+      `,
+    );
+  if (instance.length) {
+    return instance[0];
+  }
+  return instance;
+};
 module.exports = model;

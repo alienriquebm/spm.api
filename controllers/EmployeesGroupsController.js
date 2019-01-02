@@ -1,50 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const Validator = require('../common/Validator');
-const User = require('../models/User');
-const Employee = require('../models/Employee');
+
+const router = express.Router();
+const validator = require('../common/Validator');
 const EmployeeGroup = require('../models/EmployeeGroup');
 const Group = require('../models/Group');
 const DeleteHelper = require('../common/DeleteHelper');
-
-const router = express.Router();
-
-const createEmployee = async (req, res) => {
-  const body = req.only('email', 'name', 'lastname', 'phone', 'address', 'isEnabled', 'password', 'position');
-
-  const rules = {
-    rules: {
-      email: 'required|email',
-      name: 'required',
-      lastname: 'required',
-      isEnabled: 'required',
-      password: 'required|min:6',
-      position: 'required',
-    },
-    messages: {
-      'min.password': 'La contraseña debe tener al menos 6 caracteres',
-    },
-  };
-
-  const isValid = await Validator.doValidation(body, rules);
-  if (isValid !== true) {
-    return res.formValidationError(isValid);
-  }
-
-  body.password = await bcrypt.hash(body.password, 10);
-  const user = await User.create(body);
-  const employee = await Employee.create({ userId: user.id, position: body.position });
-
-  const plainEmployeeData = {
-    id: employee.id,
-    name: user.name,
-    lastname: user.lastname,
-    isEnabled: user.isEnabled,
-    position: employee.position,
-  };
-
-  return res.json(plainEmployeeData);
-};
 
 const assignEmployeeGroup = async (req, res) => {
   const body = req.only('employeeId', 'groupId');
@@ -55,7 +15,7 @@ const assignEmployeeGroup = async (req, res) => {
     },
   };
 
-  const isValid = await Validator.doValidation(body, rules);
+  const isValid = await validator.doValidation(body, rules);
   if (isValid !== true) {
     return res.formValidationError(isValid);
   }
@@ -77,9 +37,9 @@ const assignEmployeeGroup = async (req, res) => {
 };
 
 const getEmployeeGroups = async (req, res) => {
-  const id = req.userId;
+  const { id } = req.params;
   const instance = await EmployeeGroup.getEmployeeGroups(id);
-  res.json(instance);
+  res.json({ groups: instance });
 };
 
 const unassignEmployeeGroup = async (req, res) => {
@@ -90,7 +50,7 @@ const unassignEmployeeGroup = async (req, res) => {
       groupId: 'required|exists:groups,id',
     },
   };
-  const isValid = await Validator.doValidation(body, rules);
+  const isValid = await validator.doValidation(body, rules);
   if (isValid !== true) {
     return res.formValidationError(isValid);
   }
@@ -109,9 +69,8 @@ const unassignEmployeeGroup = async (req, res) => {
   return res.json(rowToDelete[0]);
 };
 
-router.get('/groups', getEmployeeGroups);
-router.post('/create', createEmployee);
-router.post('/assign-group', assignEmployeeGroup);
+router.get('/:id(\\d+)', getEmployeeGroups);
 router.delete('/unassign-group', unassignEmployeeGroup);
+router.post('/assign-group', assignEmployeeGroup);
 
 module.exports = router;
