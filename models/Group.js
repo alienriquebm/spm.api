@@ -36,23 +36,20 @@ const fields = {
 
 const model = cn.define('groups', fields);
 model.isGroupEnabled = async (groupId) => {
-  const instance = await cn
+  const [instance] = await cn
     .query(
       `
-    SELECT id FROM groups
+    SELECT COUNT(*) as total FROM groups
     WHERE id = :groupId
     AND isEnabled = 1
     `,
       {
         replacements: {
-          id: groupId,
+          groupId,
         },
         type: cn.QueryTypes.SELECT,
       },
     );
-  if (instance.length) {
-    return true;
-  }
-  return false;
+  return !!instance.total;
 };
 module.exports = model;
