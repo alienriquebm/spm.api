@@ -1,6 +1,6 @@
 require('dotenv').config();
 const bodyParser = require('body-parser');
-const colors = require('colors');
+const colors = require('colors'); // eslint-disable-line
 const express = require('express');
 const config = require('./config/server');
 const routes = require('./config/routes');
@@ -19,8 +19,6 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-logger.log({ level: 'info', message: 'Setting cors...', label: 'STARTUP' });
-
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -29,11 +27,9 @@ app.use((req, res, next) => {
   next();
 });
 
-logger.log({ level: 'info', message: 'Setting routes and JWT middleware...', label: 'STARTUP' });
 app.use(jwt);
 app.use(routes);
 
-logger.log({ level: 'info', message: 'Setting port...', label: 'STARTUP' });
-app.listen(config.port || 8000);
-logger.log({ level: 'info', message: `API server up, listening port: ${config.port}`, label: 'STARTUP' });
-console.log(colors.underline(`API server up, listening port: ${config.port}`)); // eslint-disable-line
+app.listen(config.port, () => {
+  console.log(`API server up, listening port: ${config.port}`); // eslint-disable-line
+});
