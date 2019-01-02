@@ -1,5 +1,5 @@
 const config = {
-  port: process.env.SRV_PORT,
+  port: process.env.PORT || 8080,
 };
 
 module.exports = config;
