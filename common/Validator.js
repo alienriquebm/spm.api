@@ -2,8 +2,8 @@ const Validator = require('validatorjs');
 const sequelize = require('../common/dbconnection');
 
 const defaultMessages = () => ({
-  email: 'Escriba una dirección de correo válida',
-  required: 'Campo requerido',
+  // email: 'Escriba una dirección de correo válida',
+  // required: 'Campo requerido',
 });
 
 Validator.doValidation = (fields, validationRules) => new Promise((resolve) => {

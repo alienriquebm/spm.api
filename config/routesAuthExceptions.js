@@ -3,6 +3,7 @@ const logger = require('../config/logger');
 
 const routes = [
   '/',
+  '/contactus',
   '/auth/*',
 ];
 
