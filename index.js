@@ -2,16 +2,23 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const colors = require('colors'); // eslint-disable-line
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const config = require('./config/server');
 const routes = require('./config/routes');
 const logger = require('./config/logger');
 const jwt = require('./middlewares/jwt');
-
 require('./config/express');
 
 logger.log({ level: 'info', message: 'Starting the app...', label: 'STARTUP' });
 
 const app = express();
+
+const secureServer = https.createServer({
+  key: fs.readFileSync(process.env.HTTPS_KEY_FILE_PATH || './key.pem'),
+  cert: fs.readFileSync(process.env.HTTPS_CERT_FILE_PATH || './cert.pem'),
+  passphrase: config.passphrase,
+}, app);
 
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -30,6 +37,12 @@ app.use((req, res, next) => {
 app.use(jwt);
 app.use(routes);
 
-app.listen(config.port, () => {
-  console.log(`API server up, listening port: ${config.port}`); // eslint-disable-line
-});
+if (process.env.HTTPS_ENABLE) {
+  secureServer.listen(config.securePort, () => {
+    console.log(`API server up, listening SECURE port: ${config.port}`); // eslint-disable-line
+  });
+} else {
+  app.listen(config.port, () => {
+    console.log(`API server up, listening port: ${config.port}`); // eslint-disable-line
+  });
+}
