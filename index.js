@@ -42,7 +42,7 @@ app.use(routes);
 
 if (enableHttps) {
   secureServer.listen(config.securePort, () => {
-    console.log(`API server up, listening SECURE port: ${config.port}`); // eslint-disable-line
+    console.log(`API server up, listening SECURE port: ${config.securePort}`); // eslint-disable-line
   });
 } else {
   app.listen(config.port, () => {
