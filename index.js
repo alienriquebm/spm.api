@@ -14,12 +14,15 @@ logger.log({ level: 'info', message: 'Starting the app...', label: 'STARTUP' });
 
 const app = express();
 
-const secureServer = https.createServer({
-  key: fs.readFileSync(process.env.HTTPS_KEY_FILE_PATH || './key.pem'),
-  cert: fs.readFileSync(process.env.HTTPS_CERT_FILE_PATH || './cert.pem'),
-  passphrase: config.passphrase,
-}, app);
-
+let secureServer;
+const enableHttps = process.env.HTTPS_ENABLED || false;
+if (enableHttps) {
+  secureServer = https.createServer({
+    key: fs.readFileSync(process.env.HTTPS_KEY_FILE_PATH || './key.pem'),
+    cert: fs.readFileSync(process.env.HTTPS_CERT_FILE_PATH || './cert.pem'),
+    ca: fs.readFileSync(process.env.HTTPS_CERT_FILE_PATH || './chain.pem'),
+  }, app);
+}
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
@@ -37,7 +40,7 @@ app.use((req, res, next) => {
 app.use(jwt);
 app.use(routes);
 
-if (process.env.HTTPS_ENABLE) {
+if (enableHttps) {
   secureServer.listen(config.securePort, () => {
     console.log(`API server up, listening SECURE port: ${config.port}`); // eslint-disable-line
   });
