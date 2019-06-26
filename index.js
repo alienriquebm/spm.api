@@ -20,7 +20,7 @@ if (enableHttps) {
   secureServer = https.createServer({
     key: fs.readFileSync(process.env.HTTPS_KEY_FILE_PATH || './key.pem'),
     cert: fs.readFileSync(process.env.HTTPS_CERT_FILE_PATH || './cert.pem'),
-    ca: fs.readFileSync(process.env.HTTPS_CERT_FILE_PATH || './chain.pem'),
+    ca: fs.readFileSync(process.env.HTTPS_CA_FILE_PATH || './chain.pem'),
   }, app);
 }
 app.use(bodyParser.urlencoded({
